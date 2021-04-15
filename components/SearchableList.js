@@ -1,23 +1,25 @@
-import { Item } from "native-base";
+
 import React, { Component } from "react";
-import { View, Text,StyleSheet, FlatList,TouchableHighlight,TouchableOpacity, Image, Button } from "react-native";
+import { View, Text,StyleSheet, FlatList,TouchableHighlight,TouchableOpacity, Image,Alert, Button } from "react-native";
 import { ListItem, SearchBar } from "react-native-elements";
 import Swipeout from 'react-native-swipeout';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createAppContainer  } from 'react-navigation';
 import OrderDetail from './OrderDetail'
 import AsyncStorage from '@react-native-community/async-storage';  
-import { Alert} from "react-native";
-
 import Modal from 'react-native-modal'; 
+import { Item } from "native-base";
+import AddOrder from './AddOrder'
+import { useNavigation } from '@react-navigation/native';
+
 
 class FlatListDemo extends Component {
  
   constructor(props) {
     super(props);
 
-
+ this.render=this.render.bind(this);
     this.state = {
       enable: true,
       loading: false,
@@ -50,7 +52,6 @@ class FlatListDemo extends Component {
   fetchData = async () => {
    // const fetchtype = AsyncStorage.getItem('fetchtype'); 
     console.log("fetchtype");
-    Alert.alert('fetch typr ');
     const response = await fetch("https://randomuser.me/api?results=500");
     const json = await response.json();
     this.setState({
@@ -106,59 +107,59 @@ class FlatListDemo extends Component {
       {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
     </View>
   );    
+
   render() {
-    const { navigate } = this.props.navigation;  
-    
+  
     return (
-       <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
 
 
-         <SearchBar
-        placeholder="Type Here..."
-        lightTheme
-        round
-        onChangeText={text => this.searchFilterFunction(text)}
-        autoCorrect={false}
-        value={this.state.value}
-      />
-        <FlatList
-             data={this.state.data}
-             keyExtractor={(x, i) => i.toString()}
-             renderItem={({ item }) => 
-             <Swipeout right={this.swipeBtns(item.id)}
-             autoClose='true'
-             backgroundColor= 'transparent'>
-            <TouchableHighlight
-             activeOpacity={0.6}
-             underlayColor="#DDDDDD"
-             onPress={() => 
-              {
-                this.setState({ visibleModal: 1 })
-              }
-             }>
-              <View style={styles.container}>
-               <View style={styles.container_text}>
-              
-               <Image source={{ uri: `${item.picture.thumbnail}` }} style={styles.photo} />
-     
-              <Text style={styles.title}>
-                  {`${item.name.first} ${item.name.last}`}
-              </Text>
-              <Text style={styles.description}>
-                  {"description"}
-              </Text>
-          </View>
-          <Icon  style={{ paddingLeft: 10 }}  name="md-person-add"  size={30}  />  
-      </View>
-      </TouchableHighlight>
-      </Swipeout>
-          
-          }
-        />
-          <Modal isVisible={this.state.visibleModal === 1}>
-          {this._renderModalContent()}
-        </Modal>
-      </View>
+      <SearchBar
+     placeholder="Type Here..."
+     lightTheme
+     round
+     onChangeText={text => this.searchFilterFunction(text)}
+     autoCorrect={false}
+     value={this.state.value}
+   />
+     <FlatList
+          data={this.state.data}
+          keyExtractor={(x, i) => i.toString()}
+          renderItem={({ item }) => 
+          <Swipeout right={this.swipeBtns(item.id)}
+          autoClose='true'
+          backgroundColor= 'transparent'>
+         <TouchableHighlight
+          activeOpacity={0.6}
+          underlayColor="#DDDDDD"
+          onPress={() => 
+           {
+             this.setState({ visibleModal: 1 })
+           }
+          }>
+           <View style={styles.container}>
+            <View style={styles.container_text}>
+           
+            <Image source={{ uri: `${item.picture.thumbnail}` }} style={styles.photo} />
+  
+           <Text style={styles.title}>
+               {`${item.name.first} ${item.name.last}`}
+           </Text>
+           <Text style={styles.description}>
+               {"description"}
+           </Text>
+       </View>
+       <Icon  style={{ paddingLeft: 10 }}  name="md-person-add"  onPress={() => {this.props.navigation.navigate('OrderDetail')}} size={30}  />  
+   </View>
+   </TouchableHighlight>
+   </Swipeout>
+       
+       }
+     />
+       <Modal isVisible={this.state.visibleModal === 1}>
+       {this._renderModalContent()}
+     </Modal>
+   </View>
     );
   }
 }
@@ -214,18 +215,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const AppNavigator = createStackNavigator(  
-  {  
-      FlatListDemo:  FlatListDemo,
-      OrderDetail: OrderDetail  
-  },  
-  {  
-      initialRouteName: "FlatListDemo"  
-  }  
-  
-);  
 
 
-export default  createAppContainer(AppNavigator);
+
+export default  FlatListDemo;
 
 

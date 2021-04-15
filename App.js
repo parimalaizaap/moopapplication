@@ -1,417 +1,178 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
+
+ import 'react-native-gesture-handler';
 import React, { Component } from 'react';  
-import { View, Text, StyleSheet, Button,TouchableOpacity,Alert,Image ,SafeAreaView} from 'react-native';  
-import Icon from 'react-native-vector-icons/Ionicons';  
-import {createStackNavigator} from 'react-navigation-stack';  
-import {createDrawerNavigator} from 'react-navigation-drawer';
-
-import {  
-    createSwitchNavigator,  
-    createAppContainer
-} from 'react-navigation';  
-import SearchableFlatList from './components/SearchableList';
-
-import Menu, {MenuItem, MenuDivider} from 'react-native-material-menu';
-import 'react-native-gesture-handler';
-// import AsyncStorage
-import AsyncStorage from '@react-native-community/async-storage';  
-
-
-export default class App extends Component {  
-    render() {  
-        return <AppContainer />;  
-    }  
-}  
-
-
-  
-_menu = null;
-
-setMenuRef = ref => {
-  this._menu = ref;
-};
-
-hideMenu = () => {
-  this._menu.hide();
-};
-
-showMenu = () => {
-  this._menu.show();
-};
-
-ChangeMenu = (OrderType,navigation) => {
- //   Alert.alert(OrederType);
-    AsyncStorage.setItem('fetchtype', OrderType);
-    navigation.navigate('Orders');
-    this._menu.hide();
-  };
-
-class Menus extends Component {  
-    static navigationOptions = {  
-         title: 'Moop Application',  
-    };  
-  
-    render() {  
-        return (  
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>  
-                <Text>MenuScreen</Text>  
-            </View>  
-        );  
-    }  
-}  
-
-class Orders extends Component {  
-    static navigationOptions = {  
-         title: 'Orders',  
-    };  
-
-  
-    render() {  
-        return (  
-            <View style={{ flex: 1}}>  
-                <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-               < SearchableFlatList/>
-               </SafeAreaView>
-               
-                <Button  
-                    title="Go to Menu"  
-                    onPress={() => this.props.navigation.navigate('Menu')}  
-                />  
-            </View>  
-        );  
-    } 
-}  
-                             
-class Reports extends Component {  
-    static navigationOptions = {  
-         title: 'Reports',  
-    };  
-    render() {  
-        return (  
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>  
-                <Text>ReportsScreen</Text>  
-                <Button  
-                    title="Go to Menu"  
-                    onPress={() => this.props.navigation.navigate('Menus')}  
-                />  
-            </View>  
-        );  
-    }  
-}  
+ import { View, Text, StyleSheet, Button,TouchableOpacity,Alert,Image ,SafeAreaView} from 'react-native';  
+ import {NavigationContainer} from '@react-navigation/native';
+ import {createStackNavigator} from '@react-navigation/stack';
+ import {createDrawerNavigator} from '@react-navigation/drawer';
  
-class Employee extends Component {  
-    static navigationOptions = {  
-         title: 'Employee',  
-    };  
+ import {drawerItemsMain} from './drawerItemsMain';
+ import CustomDrawerContent from './CustomDrawerContent.js';
+ import CustomHeader from './CustomHeader';
+
+ import SearchableFlatList from './components/SearchableList'
+ 
+
+ const Stack = createStackNavigator();
+ const Drawer = createDrawerNavigator();
+
+function HomeScreen() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Home Screen</Text>
+    </View>
+  );
+}
+
+function Categories() {
+   navigationOptions = {  
+    title: 'Categories',  
+    headerStyle: {  
+        backgroundColor: '#f4511e',  
+    },  
+    headerTintColor: '#0ff',  
+    headerTitleStyle: {  
+        fontWeight: 'bold',  
+    },  
+};  
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Categories</Text>
+    </View>
+  );
+}
+
+function MenuItem() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>MenuItem</Text>
+    </View>
+  );
+}
+function ModifierGroup() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>ModifierGroup</Text>
+    </View>
+  );
+}
+function ModifierLabel() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>ModifierLabel</Text>
+    </View>
+  );
+}
+function Menu() {
+  
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Menu</Text>
+    </View>
+  );
+}
+function Orders() {
+  return (
+    <View style={{ flex: 1}}>  
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+   < SearchableFlatList/>
+   </SafeAreaView>
+   
+    <Button  
+        title="Go to Menu"  
+        onPress={() => this.props.navigation.navigate('Menu')}  
+    />  
+</View>  
+  );
+}
+function Reports() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Settings 2 Screen</Text>
+    </View>
+  );
+}
+function Employee() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Settings 2 Screen</Text>
+    </View>
+  );
+}
+
+function Tables() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Settings 2 Screen</Text>
+    </View>
+  );
+}
+function Transactions() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Settings 2 Screen</Text>
+    </View>
+  );
+}
+function Profile() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Settings 2 Screen</Text>
+    </View>
+  );
+}
+function MainDrawerNavigation() {
+  return (
+    <Drawer.Navigator
+      initialRouteName="Home"
+      drawerContent={(props) => (
+        <CustomDrawerContent drawerItems={drawerItemsMain} {...props} />
+      )}>
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Categories" component={Categories} />
+      <Drawer.Screen name="MenuItem" component={MenuItem} />
+      <Drawer.Screen name="ModifierGroup" component={ModifierGroup} />
+      <Drawer.Screen name="ModifierLabel" component={ModifierLabel} />
+      <Drawer.Screen name="Menu" component={Menu} title="Menu" />
+      <Drawer.Screen name="Orders" component={Orders} />
+      <Drawer.Screen name="Reports" component={Reports} />
+      <Drawer.Screen name="Employee" component={Employee} />
+      <Drawer.Screen name="Tables" component={Tables} />
+      <Drawer.Screen name="Transactions" component={Transactions} />
+      <Drawer.Screen name="Profile" component={Profile} />
+      
+    </Drawer.Navigator>
+  );
+}
+const styles = StyleSheet.create({});
+ export default class App extends Component {  
     render() {  
-        return (  
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>  
-                <Text>EmployeeScreen</Text>  
-                <Button  
-                    title="Go to Menu"  
-                    onPress={() => this.props.navigation.navigate('Menus')}  
-                />  
-            </View>  
-        );  
+        return (
+          <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerMode: 'screen',
+              headerTintColor: '#404554',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+              header: (props) => {
+                return <CustomHeader {...props} />;
+              },
+            }}>
+            <Stack.Screen name="MainDrawer" component={MainDrawerNavigation} />
+          </Stack.Navigator>
+        </NavigationContainer>
+          );
     }  
 }  
-  
-class Tables extends Component {  
-    static navigationOptions = {  
-         title: 'Tables',  
-    };  
-    render() {  
-        return (  
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>  
-                <Text>TablesScreen</Text>  
-                <Button  
-                    title="Go to Menu"  
-                    onPress={() => this.props.navigation.navigate('Menus')}  
-                />  
-            </View>  
-        );  
-    }  
-}  
-
-class Transactions extends Component {  
-    static navigationOptions = {  
-         title: 'Transactions',  
-    };  
-    render() {  
-        return (  
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>  
-                <Text>TransactionScreen</Text>  
-                <Button  
-                    title="Go to Menu"  
-                    onPress={() => this.props.navigation.navigate('Menus')}  
-                />  
-            </View>  
-        );  
-    }  
-}  
-
-class Profile extends Component {  
-    static navigationOptions = {  
-         title: 'Profile',  
-    };  
-    render() {  
-        return (  
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>  
-                <Text>ProfileScreen</Text>  
-                <Button  
-                    title="Go to Menu"  
-                    onPress={() => this.props.navigation.navigate('Menus')}  
-                />  
-            </View>  
-        );  
-    }  
-}  
-
-class Logout extends Component {  
-    static navigationOptions = {  
-         title: 'Logout',  
-    };  
-    render() {  
-        return (  
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>  
-                <Text>LogoutScreen</Text>  
-                <Button  
-                    title="Go to Menu"  
-                    onPress={() => this.props.navigation.navigate('Menus')}  
-                />  
-            </View>  
-        );  
-    }  
-}  
 
 
-const MenuStackNavigator = createStackNavigator(  
-    {  
-        MenuNavigator: Menu  
-    },  
-    {  
-        defaultNavigationOptions: ({ navigation }) => {  
-        return {  
-            headerLeft: (  
-                <Icon  
-                    style={{ paddingLeft: 10 }}  
-                    onPress={() => navigation.openDrawer()}  
-                    name="md-menu"  
-                    size={30}  
-                />  
-            )  
-        };  
-        }  
-    }  
-);  
-  
-const OrdersStackNavigator = createStackNavigator(  
-    {  
-        OrdersNavigator: Orders 
-    },  
-    {  
-        defaultNavigationOptions: ({ navigation }) => {  
-            let _menu = null;
-            return {  
-                headerLeft: (  
-                    <Icon  
-                        style={{ paddingLeft: 10 }}  
-                        onPress={() => navigation.openDrawer()}  
-                        name="md-menu"  
-                        size={30}  
-                    />  
-                )  ,
-                headerRight: () => (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Menu
-              ref={this.setMenuRef}
-              button={<Text onPress={this.showMenu}>Show menu</Text>}
-              >
-             <MenuItem onPress={this.ChangeMenu.bind(this,'1',navigation)}>Completed Order</MenuItem>
-             <MenuItem onPress={this.ChangeMenu.bind(this,'2',navigation)}>Current Order</MenuItem>
-              <MenuItem onPress={this.ChangeMenu.bind(this,'3',navigation)} disabled>
-              Accepted Order
-             </MenuItem>
-          <MenuDivider />
-          <MenuItem onPress={this.hideMenu}>Cancel</MenuItem>
-        </Menu>
-      </View>
-                  ),
-            };  
-        }  
-    }  
-);  
-
-const ReportsStackNavigator = createStackNavigator(  
-    {  
-        ReportsNavigator: Reports 
-    },  
-    {  
-        defaultNavigationOptions: ({ navigation }) => {  
-            return {  
-                headerLeft: (  
-                    <Icon  
-                        style={{ paddingLeft: 10 }}  
-                        onPress={() => navigation.openDrawer()}  
-                        name="md-menu"  
-                        size={30}  
-                    />  
-                )  
-            };  
-        }  
-    }  
-); 
-
-const EmployeeStackNavigator = createStackNavigator(  
-    {  
-        EmployeeNavigator: Employee 
-    },  
-    {  
-        defaultNavigationOptions: ({ navigation }) => {  
-            return {  
-                headerLeft: (  
-                    <Icon  
-                        style={{ paddingLeft: 10 }}  
-                        onPress={() => navigation.openDrawer()}  
-                        name="md-menu"  
-                        size={30}  
-                    />  
-                )  
-            };  
-        }  
-    }  
-);  
-
-const TablesStackNavigator = createStackNavigator(  
-    {  
-        TablesNavigator: Tables 
-    },  
-    {  
-        defaultNavigationOptions: ({ navigation }) => {  
-            return {  
-                headerLeft: (  
-                    <Icon  
-                        style={{ paddingLeft: 10 }}  
-                        onPress={() => navigation.openDrawer()}  
-                        name="md-menu"  
-                        size={30}  
-                    />  
-                )  
-            };  
-        }  
-    }  
-);  
-
-const TransactionsStackNavigator = createStackNavigator(  
-    {  
-        TransactionsNavigator: Transactions 
-    },  
-    {  
-        defaultNavigationOptions: ({ navigation }) => {  
-            return {  
-                headerLeft: (  
-                    <Icon  
-                        style={{ paddingLeft: 10 }}  
-                        onPress={() => navigation.openDrawer()}  
-                        name="md-menu"  
-                        size={30}  
-                    />  
-                )  
-            };  
-        }  
-    }  
-);  
-
-const ProfileStackNavigator = createStackNavigator(  
-    {  
-        ProfileNavigator: Profile 
-    },  
-    {  
-        defaultNavigationOptions: ({ navigation }) => {  
-            return {  
-                headerLeft: (  
-                    <Icon  
-                        style={{ paddingLeft: 10 }}  
-                        onPress={() => navigation.openDrawer()}  
-                        name="md-menu"  
-                        size={30}  
-                    />  
-                )  
-            };  
-        }  
-    }  
-);  
-
-
-const LogoutStackNavigator = createStackNavigator(  
-    {  
-        LogoutNavigator: Logout 
-    },  
-    {  
-        defaultNavigationOptions: ({ navigation }) => {  
-            return {  
-                headerLeft: (  
-                    <Icon  
-                        style={{ paddingLeft: 10 }}  
-                        onPress={() => navigation.openDrawer()}  
-                        name="md-menu"  
-                        size={30}  
-                    />  
-                )  
-            };  
-        }  
-    }  
-);  
-
-const AppDrawerNavigator = createDrawerNavigator({  
-    Menu: {  
-        screen: MenuStackNavigator  
-    },  
-    Orders: {  
-        screen: OrdersStackNavigator  
-    },  
-    Reports:{
-        screen:ReportsStackNavigator
-    },
-    Employee:{
-        screen:EmployeeStackNavigator
-    },
-    Tables:{
-        screen:TablesStackNavigator
-    },
-    Transactions:{
-        screen:TransactionsStackNavigator
-    },
-    Profile:{
-        screen:ProfileStackNavigator
-    },
-    Logout:{
-        screen:LogoutStackNavigator
-    },
-});  
-  
-const AppSwitchNavigator = createSwitchNavigator({  
-    Menu: { screen: AppDrawerNavigator },  
-    Orders: { screen: Orders},  
-    Reports: { screen: Reports}, 
-    Employee: { screen: Employee},  
-    Tables: { screen: Tables}, 
-    Transactions: { screen: Transactions},  
-    Profile: { screen: Profile},  
-    Logout: { screen: Logout},  
-});  
-
-const AppContainer = createAppContainer(AppSwitchNavigator);  
-  
-const styles = StyleSheet.create({  
-    container: {  
-        flex: 1,  
-        alignItems: 'center',  
-        justifyContent: 'center'  
-    }  
-});  
-
-
-
-
-
-  
+ 

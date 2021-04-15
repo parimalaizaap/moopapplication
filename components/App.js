@@ -1,7 +1,7 @@
 import React, { Component } from 'react';  
 import { View, Text, StyleSheet, Button,TouchableOpacity,Alert,Image ,SafeAreaView} from 'react-native';  
 import Icon from 'react-native-vector-icons/Ionicons';  
-import {createStackNavigator} from 'react-navigation-stack';  
+import {createStackNavigator} from '@react-navigation/stack';  
 import {createDrawerNavigator} from 'react-navigation-drawer';
 
 import {  
