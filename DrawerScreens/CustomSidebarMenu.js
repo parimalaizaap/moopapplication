@@ -22,7 +22,7 @@ const CustomSidebarMenu = (props) => {
             {'Moop React'.charAt(0)}
           </Text>
         </View>
-        <Text style={stylesSidebar.profileHeaderText}>Moop Application</Text>
+        <Text style={stylesSidebar.profileHeaderText}>Moop Business</Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />
 

@@ -92,6 +92,8 @@ const RegisterScreen = (props) => {
         console.error(error);
       });
   };
+
+  
   if (isRegistraionSuccess) {
     return (
       <View
@@ -211,6 +213,7 @@ const RegisterScreen = (props) => {
     </View>
   );
 };
+
 export default RegisterScreen;
 
 const styles = StyleSheet.create({

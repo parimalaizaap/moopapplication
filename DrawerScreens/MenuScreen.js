@@ -92,10 +92,9 @@ class ExpandableItemComponent extends Component {
     return (
       <View>
         {/*Header of the Expandable List Item*/}
-       <ScrollView style={styles.scrollViews}></ScrollView>
         <Swipeout right={this.swipeBtns(this.props.item.category_id)}
              autoClose='true'
-             backgroundColor= 'transparent'>    
+             backgroundColor= 'transparent'>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={this.props.onClickFunction}
@@ -203,11 +202,13 @@ removecategory() {
       };
     });
   };
+ 
+
+
   render() {
-    return (
-      
-      <View style={styles.container}>      
-        <ScrollView>
+    return (      
+      <View style={styles.container}>        
+        <ScrollView style={styles.scrollViews}>
           {this.state.listDataSource.map((item, key) => (
             <ExpandableItemComponent
               key={item.category_name}
@@ -230,6 +231,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 10,
     backgroundColor: '#F5FCFF',
+  },
+  scrollViews:{
+    marginTop: 50,
   },
   containers:{  
     flex: 1,  

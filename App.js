@@ -16,9 +16,12 @@ import RegisterScreen from './DrawerScreens/RegisterScreen';
 import DrawerNavigationRoutes from './DrawerScreens/DrawerNavigationRoutes';
 import ForgotPass from './DrawerScreens/ForgotPass';
 
+import PushNotification from "react-native-push-notification";
+
 const Stack = createStackNavigator();
 
 const Auth = () => {
+  
   // Stack Navigator for Login and Sign up Screen
   return (
     <Stack.Navigator initialRouteName="LoginScreenDrawer">
@@ -58,6 +61,7 @@ const Auth = () => {
 /* Switch Navigator for those screens which needs to be switched only once
   and we don't want to switch back once we switch from them to the next one */
 const App = () => {
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">

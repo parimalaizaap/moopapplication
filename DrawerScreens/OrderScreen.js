@@ -1,317 +1,390 @@
-// Searching using Search Bar Filter in React Native List View
-// https://aboutreact.com/react-native-search-bar-filter-on-listview/
+import React, { useState, useEffect, Component} from 'react';
 
-// import React in our code
-import React, {useState, useEffect,Component} from 'react';
-       
-// import all the components we are going to use
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  TextInput,
-  Modal,
-  Button,
-  Alert,
-  TouchableOpacity
-} from 'react-native';
+import { SafeAreaView, Button,StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Modal,Dimensions, Alert, TextInput} from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import {Card} from 'react-native-shadow-cards';
+import moment from 'moment';
+const { width } = Dimensions.get("window");
 
-const Orderscreen = ({navigation}) => 
-{
-  
+
+export default function Basic({navigation}) {
   const [isModalVisible, setModalVisible] = useState(false);
 	const [inputValue, setInputValue] = useState("");
 	const toggleModalVisibility = () => {
 		setModalVisible(!isModalVisible);
     };
-    const [count, setCount] = React.useState(0);
+
+
+  const [listData, setListData] = useState([]);
   const [search, setSearch] = useState('');
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
-  const [menuitem, setMenuitems] = useState([]);
 
-  const item=()=>{
 
-    Alert.alert('hi')
-  }
-
-    useEffect(() => {
-    fetch('http://testweb.izaap.in/moop/api/index.php/service/orders/lists?X-API-KEY=MoopApp2021@!&user_id=232',{
-      method: 'GET'
-      //Request Type 
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return responseJson.data;
-      })
-      .then( data  => {
-        
-       // setFilteredDataSource(data);
-        setMasterDataSource(data);
-       // console.log("data "+data.userid);
-        data.map((item, index)=>{
-        // setMenuitems(item.menujson);
-      //  const userstr= JSON.parse(item.menujson);
-      const obj = JSON.parse(item.menujson);
-      
-      obj.map((objitem, index)=>{
-       // console.log(objitem.itemname);
-        // const objmodi = JSON.parse(objitem.modifiers);
-        // objmodi.map((moditem, index)=>{
-         // console.log("modifiers "+moditem.modifier_group_name);
-        // })
-         })
-       //  console.log(item.amount);
+  useEffect(() => {                   
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetch('http://testweb.izaap.in/moop/api/index.php/service/orders/lists?X-API-KEY=MoopApp2021@!&user_id=251',{
+        method: 'GET'
+        //Request Type 
         })
-      //  setArticles(articles);
-        //console.log(articles);
-     //   setLoading(falsresponseJsone);
-    //  })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          //console.log(responseJson);
+          return responseJson.data;
+        })
+        .then( data  => {
+              setListData(data);    
+              console.log('data 1',data);
+              if(data != undefined){ 
+                      data.map((item, index)=>{                          
+                      //const obj = JSON.parse(item.menujson);      
+                  //     obj.map((objitem, index)=>{       
+                   })       
+                 // })
+              }
+              else
+              {
+                console.log('No Data Found');
+                Alert.alert('No Data Found');
+              } 
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });  
+return unsubscribe;      
+}, [navigation]);
 
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
-  /*const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource
-      // Update FilteredDataSource
-      const newData = masterDataSource.filter(
-        function (item) {
-          const itemData = item.title
-            ? item.title.toUpperCase()
-            : ''.toUpperCase();
-          const textData = text.toUpperCase();
-
-          return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
+  const closeItem = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
     }
   };
-  */
+
+
+  const onItemOpen = rowKey => {
+    console.log('This row opened', rowKey);
+  };
+
+  
   const ItemView = ({item}) => 
-  {  
-    let itemname="",tableid="",seats="",price="",category="",categoryTax="",description="",quantity="",amount="",orderdatetime="",completeddatetime=""; 
+  {        
+    let id="", tableid="",seats="",amount="",orderdatetime="",updatedatetime="",completeddatetime="",specialInstruction="", comments="", tipAmount=""; 
     try{   
       tableid=item.tableid;
       seats=item.seats;
       amount=item.amount;
       orderdatetime=item.orderdatetime;
+      updatedatetime=item.updatedatetime;
       completeddatetime=item.completeddatetime;
-
-      const paymnetjson = JSON.parse(item.paymentjson);
-      console.log("Payment Json "+paymnetjson);
-      
-      const obj = JSON.parse(item.menujson);
-
-      obj.map((objitem, index)=>{
-
-       itemname=objitem.itemname;
-       price=objitem.price;
-       category=objitem.category;
-       categoryTax=objitem.categoryTax;
-       description=objitem.description;
-       quantity=objitem.quantity;
-       console.log("Modifiers "+objitem.modifiers);
-
-        })
-
-   
-       
+      specialInstruction=item.special_instruction;
+      comments=item.comments;
+      tipAmount=item.tip_amount;
+      id=item.id;
+            
     } catch(e) { console.error(e); } 
-  
+    return (            
+        <View>                
+          <Card style={{width: '95%', padding: 10, margin: 10, backgroundColor:'#F6FAFE'}}>
+            <TouchableOpacity onPress={() =>{toggleModalVisibility}} style={styles.rowFront} underlayColor={'#fff'}>
+              <Text style={styles.itemStyle}>{"Table Number : "+ tableid }</Text>  
+              <Text style={styles.itemStyle}>{"Seats : "+ seats}</Text>
+              <Text style={styles.itemStyle}>{"Amount : $"+ amount }</Text>
+              <Text style={styles.itemStyle}>{"Comments : "+ comments }</Text>            
+              <Text style={styles.itemStyle}>{"Special Instruction : "+ specialInstruction}</Text>
+              <Text style={styles.itemStyle}>{"Tip Amount : $"+ tipAmount}</Text>
+              <Text style={styles.itemStyle}>{"Order Date Time : "+ moment(orderdatetime).format("MM-DD-YYYY hh:mma")}</Text>
+              <Text style={styles.itemStyle}>{"Update Date Time : "+ moment(updatedatetime).format("MM-DD-YYYY hh:mma")}</Text>
+              <Text style={styles.itemStyle}>{"Completed Date Time : "+ moment(completeddatetime).format("MM-DD-YYYY hh:mma")}</Text>
+            </TouchableOpacity>
+          </Card>          
+        </View>
+    );
+  };
+
+
+  const deleteOrder = (data) => {      
+    console.log('Delete Order',data.item.id);
+    let dataToSend = {order_id: data.item.id};
+    let formBody = [];
+    for (let key in dataToSend) {
+      let encodedKey = encodeURIComponent(key);
+      let encodedValue = encodeURIComponent(dataToSend[key]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+
+    fetch(`http://testweb.izaap.in/moop/api/index.php/service/orders/remove?X-API-KEY=MoopApp2021@!&order_id=${data.item.id}`, {
+      method: 'GET',
+      
+      headers: {
+        //Header Defination
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+        console.log(responseJson);        
+        if (responseJson.status === 'success') {         
+
+        } else {          
+          if(responseJson.message === 'No Orders Found!')
+          {
+            Alert.alert('Order Deleted Successfully')
+          }            
+        }
+      })
+      .catch((error) => {
+        //Hide Loader
+       // setLoading(false);
+        Alert.alert(error)
+        console.error(error);
+      });
+  };
+ 
+
+  const deleteItem = (rowMap, rowKey, data) => { 
+    console.log('RowKey delete item**-',data.item.id)
+    closeItem(rowMap, rowKey);
+    const newData = [...listData];    
+    const prevIndex = listData.findIndex(item => item.key === rowKey);
+    console.log(rowKey);
+    newData.splice(prevIndex, 1);
+    setListData(newData);    
+    deleteOrder(data);
+  };
+
+
+  const getOrderDetail = (rowMap, rowKey, data) => {
+    console.log('Order Get Detail - Delete **-', data.item.id)
+    console.log('Order Key', rowKey)
+    navigation.navigate('AddUpdatePageStack',{
+        screen: 'AddUpdatePage', 
+        params: {data: data, operation: 'update'},
+    });
+    // navigation.navigate('SecondPage', {
+    //   paramKey: userName,
+    // })
+    //
+    // fetch(`http://testweb.izaap.in/moop/api/index.php/service/orders/view?X-API-KEY=MoopApp2021@!&order_id=${data.item.id}`,{
+    //     method: 'GET'
+    //     //Request Type 
+    //     })
+    //     .then((response) => response.json())
+    //     .then((responseJson) => {
+    //       //console.log(responseJson);
+    //       return responseJson.data;
+    //     })
+    //     .then( data  => {
+    //           //setListData(data);    
+    //           console.log('OrderDetails',data);
+    //           if(data != undefined){ 
+    //                  // data.map((item, index)=>{                          
+    //                   //const obj = JSON.parse(item.menujson);      
+    //               //     obj.map((objitem, index)=>{       
+    //               // })       
+    //              // })
+    //           }
+    //           else
+    //           {
+    //             console.log('No Data Found');
+    //             Alert.alert('No Data Found');
+    //           } 
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+
+    //console.log('RowMap - *** ', rowMap._dispatchInstances._debugOwner)
+    //console.log('Order Get Detail - Row Key', rowMap)
     
+  }
+
+
+  const renderHiddenItem = (data, rowMap) => {
+    console.log("Data Item ID", data.item.id);
+    console.log("Row Map", rowMap);
+    console.log("Data", data);
 
     return (
-      // Flat List Item
-      /*{item.id}
-        {'\n'}
-        {item.title.toUpperCase()}*/
-        <View>
-        <Text
-        style={styles.itemStyle}
-        onPress={() => getItem(item)}>
-        {"Table Id "+tableid}
-      </Text>  
-      <Text
-        style={styles.itemStyle}
-        onPress={() => getItem(item)}>
-        {"Category "+itemname+" Quantity "+quantity }
-      </Text>
-      <Text
-        style={styles.itemStyle}
-        onPress={() => getItem(item)}>
-        {"Description "+itemname }
-      </Text>
-      <Text
-        style={styles.itemStyle}
-        onPress={() => getItem(item)}>
-        {"Price "+price }
-      </Text>
-      <Text
-        style={styles.itemStyle}
-        onPress={() => getItem(item)}>
-        {"Amount "+amount }
-      </Text>
-      </View>
-    );
-  };
-
-  const ItemSeparatorView = () => 
-  {
-    return (
-      // Flat List Item Separator
-      <View style={{height: 2,width: '100%',backgroundColor: '#C8C8C8'}}/> 
-    );
-  };
-
-const getItem=(item)=>{
-
-  Alert.alert('Id : ' + item.id + '\n'+'Title : ' + item.title);
-
-
-};
-
-
-    return (
-
-      <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={(text) => searchFilterFunction(text)}
-          value={search}
-          underlineColorAndroid="transparent"
-          placeholder="Search Here"
-        />
-         <View>
-      <Modal animationType="slide"
-				transparent visible={isModalVisible}
-				presentationStyle="overFullScreen"
-				onDismiss={toggleModalVisibility}>
-				<View style={styles.viewWrapper}>
-					<View style={styles.modalView}>
-						<TextInput placeholder="Item"
-								value={inputValue} style={styles.textInput}
-								onChangeText={(value) => setInputValue(value)} />
-
-             <TextInput placeholder="Price"
-								value={inputValue} style={styles.textInput}
-								onChangeText={(value) => setInputValue(value)} />
-
-						<Button title="Add" onPress={toggleModalVisibility} />
-					</View>
-				</View>
-			</Modal>
-      </View>
-
-        <Text style={styles.txt}>
-            Current Orders
-        </Text>
-
-       
-        <FlatList
-          data={masterDataSource}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
-      </View>
-
-      <TouchableOpacity style={styles.addButton}
-      onPress={() =>navigation.navigate('AddUpdatePage')}>
-      <Text style={styles.addButtonText}>+</Text>
+    <View style={styles.rowBack}>
+      <TouchableOpacity style={[styles.actionButton, styles.closeBtn]} onPress={() => {getOrderDetail(rowMap, data.item.key, data)}}>      
+        <Text style={styles.btnText}>Update</Text>
       </TouchableOpacity>
 
-    </SafeAreaView>
-
-
+      <TouchableOpacity style={[styles.actionButton, styles.deleteBtn]} onPress={() => {        
+        Alert.alert(
+          'Alert',
+          'Are you sure you want to delete ?',
+          [
+            {text:'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text:'Yes', onPress: ()=> {
+              deleteItem(rowMap, data.item.key, data);
+            }}
+          ],
+          { cancelable: true }
+        );
+        }
+      }
+      >
+        <Text style={styles.btnText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
   );
-};
+}
 
+
+  return (
+    <SafeAreaView style={{flex: 1}}>
+    <View style={styles.container}>      
+      <TextInput
+            style={styles.textInputStyle}
+            onChangeText={(text) => searchFilterFunction(text)}
+            value={search}
+            underlineColorAndroid="transparent"
+            placeholder="Search Here"
+          />
+          
+
+        <View  style={styles.headerView}>
+          <Text style={styles.txt}>
+              Orders
+          </Text>
+        </View>
+          
+      <SwipeListView
+            data={listData}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={ItemView}
+            renderHiddenItem={renderHiddenItem}
+            leftOpenValue={200}
+            rightOpenValue={-150}
+            previewRowKey={'0'}
+            previewOpenValue={-40}
+            previewOpenDelay={3000}
+            onRowDidOpen={onItemOpen}   
+            disableRightSwipe={true}         
+      />
+      <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate('AddUpdatePageStack',{Screen:'AddUpdatePage', params: {operation:'add'}})}>
+          <Text style={styles.addButtonText}>+</Text>
+      </TouchableOpacity>
+    </View>
+    </SafeAreaView>
+  );
+}
 
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+    flex: 1,
   },
-  itemStyle: {
-    padding: 10,
+  list: {
+    color: '#FFF',
+  },
+  btnText: {
+    color: '#FFF',
+    textShadowColor: 'white',    
+  },
+  txt:{
+    //paddingLeft:100,
+    fontSize:22,
+    fontWeight:'bold',    
+  },
+  headerView:{    
+    alignItems: 'center',    
   },
   textInputStyle: {
     height: 40,
-    borderWidth: 3,
+    borderWidth: 2,
     paddingLeft: 20,
     borderRadius:10,
     margin: 5,
-    borderColor: '#009688',
-    backgroundColor: 'yellow',
+    borderColor: '#5F6160',
+    backgroundColor: '#F6FAFE',
   },
-  container2:
-    {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 15
-    },
-
-    txt:{
-      paddingLeft:100,
-      fontSize:22,
-      fontWeight:'bold'
-    },
-    addButton:{
-
-      position:'absolute',
-      zIndex:11,
-      right:20,
-      bottom:50,
-      backgroundColor:'#307ecc',
-      width:80,
-      height:80,
-      borderRadius:50,
-      alignItems:'center',
-      justifyContent:'center',
-      elevation:8,
-    },
-    addButtonText:{
-    color:'#fff',
-    fontSize:24,
-    },
-    modalContent: {
-      backgroundColor: 'white',
-      padding: 22,
-      justifyContent: 'center',
-      borderRadius: 4,
-      borderColor: 'rgba(0, 0, 0, 0.1)',
-      height:450,
-      width:360,
-      alignSelf:'center'
-    },
-    note: 
-    {
-    position:'relative',
-    padding:20,
-    paddingRight:100,
-    borderBottomWidth:2,
-    borderBottomColor:'#bdb76b' ,   
-    
-    },
-
+  rowFront: {
+    //alignItems: 'center',
+    //backgroundColor: 'lightcoral',
+    //borderBottomColor: 'black',
+    //borderBottomWidth: 0.5,
+    //justifyContent: 'center',
+    height: 180,
+  },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 5,
+  },
+  actionButton: {
+    alignItems: 'center',
+    bottom: 20,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 20,
+    right:60,
+    width: 75,
+  },
+  closeBtn: {
+    backgroundColor: 'blue',
+    //bottom: 40,
+    right: 80,
+    //width: 75,    
+    //top: 20,
+    // height: '100%'
+  },
+  deleteBtn: {
+    backgroundColor: 'red',
+    right: 10,
+  },
+  addButtonText:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+  addButton:{
+    position:'absolute',
+    zIndex:11,
+    right:20,
+    bottom:50,
+    backgroundColor:'#DB3133',
+    width:80,
+    height:80,
+    borderRadius:50,
+    alignItems:'center',
+    justifyContent:'center',
+    elevation:8,
+  },
+  viewWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+  },
+  modalView: {
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    right:"25%",
+    elevation: 5,
+    transform: [{ translateX: -(width * 0.4) },
+          { translateY: -90 }],
+    height: 370,
+    width: width * 0.8,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+  },
+  itmtxt:{
+    fontSize:20
+},
+itemStyle: {
+  padding: 3,
+  fontSize: 10,
+},
 });
-
-export default Orderscreen;

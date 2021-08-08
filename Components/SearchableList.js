@@ -117,14 +117,14 @@ class FlatListDemo extends Component {
 
 
       <SearchBar
-     placeholder="Type Here..."
-     lightTheme
-     round
-     onChangeText={text => this.searchFilterFunction(text)}
-     autoCorrect={false}
-     value={this.state.value}
-   />
-     <FlatList
+          placeholder="Type Here..."
+          lightTheme
+          round
+          onChangeText={text => this.searchFilterFunction(text)}
+          autoCorrect={false}
+          value={this.state.value}
+      />
+      <FlatList
           data={this.state.data}
           keyExtractor={(x, i) => i.toString()}
           renderItem={({ item }) => 
@@ -152,16 +152,16 @@ class FlatListDemo extends Component {
            </Text>
        </View>
        <Icon  style={{ paddingLeft: 10 }}  name="md-person-add"  onPress={() => {navigation.navigate('OrderDetail')}} size={30}  />  
-   </View>
-   </TouchableHighlight>
-   </Swipeout>
+      </View>
+      </TouchableHighlight>
+      </Swipeout>
        
        }
-     />
+      />
        <Modal isVisible={this.state.visibleModal === 1}>
        {this._renderModalContent()}
      </Modal>
-   </View>
+    </View>
     );
   }
 }

@@ -28,6 +28,7 @@ const Auth = () => {
         options={{headerShown:false,
         }}
       />
+
       <Stack.Screen
         name="RegisterScreen"
         component={RegisterScreen}
@@ -42,12 +43,15 @@ const Auth = () => {
           },
         }}
       />
+
       <Stack.Screen
       name="ForgotPass"
       component={ForgotPass}
       options={{headerShown:false
       }}
       />
+
+ 
     </Stack.Navigator>
   );
 };
