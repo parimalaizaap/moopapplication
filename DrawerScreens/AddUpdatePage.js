@@ -2,8 +2,8 @@ import React, { Component } from 'react';
  
 import { StyleSheet, Alert, View, Button, Picker,Text,TextInput,TouchableOpacity,Modal} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
- 
-
+import { Dropdown } from 'react-native-material-dropdown-v2';
+import DropDownPicker from 'react-native-dropdown-picker';
 export default class AddUpdatePage extends Component{
  
   static navigationOptions = ({ navigation }) => {
@@ -23,10 +23,17 @@ export default class AddUpdatePage extends Component{
     var specialInstruction;
     var comments;
     var oper;
+    var selectedValue;
 
     //const { navigation } = this.props;  
     this.state = {
       data:''
+    }
+    this.state={
+      userValues:[],
+      selectedValue:'java' , 
+      open: false,
+      value: null,
     }
     this.state = {user_id: ''}
     this.state = {order_id: ''}
@@ -43,8 +50,22 @@ export default class AddUpdatePage extends Component{
     }
     this.state = {
       TextInputValue1: '',      
-    }    
+    }  
+    this.setValue = this.setValue.bind(this);
   }
+
+  setOpen(open) {
+    this.setState({
+      open
+    });
+  }
+
+  setValue(callback) {
+    this.setState(state => ({
+      value: callback(state.value)
+    }));
+  }
+
 
   componentWillMount(){
     
@@ -85,8 +106,27 @@ export default class AddUpdatePage extends Component{
       console.log("data1", this.tableId)
       console.log("data1", this.specialInstruction)
       console.log("data1", this.comments)
+     // this.GetFakeData();
+
     });
     //this.fetchData();     
+    fetch('http://testweb.izaap.in/moop/api/index.php/service/menuitems/lists?X-API-KEY=MoopApp2021@!&user_id=251')
+    .then(response => response.json())
+    .then(json => {
+    
+    this.setState({
+    userValues:json.data
+    
+    })
+    userValues.map((item, index)=>{  
+                    
+      //const obj = JSON.parse(item.itemname);  
+      console.log("item "+JSON.parse(item.itemname))    
+     // obj.map((objitem, index)=>{       
+  // })       
+  })
+   // console.log(this.state.userValues)
+    })
   }
 
 
@@ -258,7 +298,40 @@ addOrder =()=>{
   
 }
 
+
+GetFakeData = () => {
+  fetch('http://testweb.izaap.in/moop/api/index.php/service/menuitems/lists?X-API-KEY=MoopApp2021@!&user_id=251')
+  .then(response => response.json())
+  .then(json => {
+  
+  this.setState({
+  userValues:json
+  })
+
+ // console.log(this.state.userValues)
+  })
+  }
+
  render() {
+
+
+  let data = [{
+    value: 'Banana',
+  }, {
+    value: 'Mango',
+  }, {
+    value: 'Pear',
+  }];
+
+  const { open, value } = this.state;
+
+  /*let myUsers = this.state.userValues.map((myValue,myIndex)=>{
+    
+    return(
+      <View><Text>{myValue.itemname}</Text></View>
+    )
+    })*/
+
    return (
         <View style={styles.container}>
         <View>
@@ -334,6 +407,8 @@ addOrder =()=>{
         <Modal animationType = {"fade"} transparent = {true} visible = {this.state.isVisible}  
           onRequestClose = {() =>{ console.log("Modal has been closed.") } }>  
               <View style = {styles.modal}>  
+
+
                 <Text style = {styles.text}>ADD ITEM PRICE</Text> 
                 <TextInput 
                   style={{height:40,width:200,borderWidth:1,bottom:20,borderRadius:10}}
@@ -346,6 +421,18 @@ addOrder =()=>{
                     onChangeText={TextInputValue1 => this.setState({TextInputValue1})}
                     placeholder="Price">
                 </TextInput>
+
+
+                <View style={styles.container}>
+                <DropDownPicker
+            open={open}
+        value={value}
+        items={data}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+       />
+             </View>
 
                 <Button 
                     style={styles.bu} title="ADD" onPress = {() => {this.setState({ isVisible:!this.state.isVisible})}}                 

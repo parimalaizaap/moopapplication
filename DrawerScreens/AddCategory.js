@@ -31,11 +31,10 @@ export default class AddCategory extends Component{
  componentWillMount(){
     
     this.props.navigation.addListener('focus', () => {
-      console.log("componentWillMount") 
+  
       this.oper = this.props.route.params?.operation ?? 'add'
       if(this.oper === "update")
       {
-        console.log("update")
         this.categoryIdInfo = this.props.route.params?.data.item.id ?? 'categoryid';
         this.titleInfo = this.props.route.params?.data.item.title ?? 'title';
         this.descriptionInfo = this.props.route.params?.data.item.description ?? 'description';
@@ -47,7 +46,6 @@ export default class AddCategory extends Component{
         this.setState({categoryTax: this.categoryTaxInfo});        
         }
         else{
-          console.log("add")
           this.setState({categoryId: ''}); 
           this.setState({title: ''});
           this.setState({description: ''});

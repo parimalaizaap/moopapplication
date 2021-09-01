@@ -162,43 +162,7 @@ return unsubscribe;
     navigation.navigate('AddUpdatePageStack',{
         screen: 'AddUpdatePage', 
         params: {data: data, operation: 'update'},
-    });
-    // navigation.navigate('SecondPage', {
-    //   paramKey: userName,
-    // })
-    //
-    // fetch(`http://testweb.izaap.in/moop/api/index.php/service/orders/view?X-API-KEY=MoopApp2021@!&order_id=${data.item.id}`,{
-    //     method: 'GET'
-    //     //Request Type 
-    //     })
-    //     .then((response) => response.json())
-    //     .then((responseJson) => {
-    //       //console.log(responseJson);
-    //       return responseJson.data;
-    //     })
-    //     .then( data  => {
-    //           //setListData(data);    
-    //           console.log('OrderDetails',data);
-    //           if(data != undefined){ 
-    //                  // data.map((item, index)=>{                          
-    //                   //const obj = JSON.parse(item.menujson);      
-    //               //     obj.map((objitem, index)=>{       
-    //               // })       
-    //              // })
-    //           }
-    //           else
-    //           {
-    //             console.log('No Data Found');
-    //             Alert.alert('No Data Found');
-    //           } 
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-
-    //console.log('RowMap - *** ', rowMap._dispatchInstances._debugOwner)
-    //console.log('Order Get Detail - Row Key', rowMap)
-    
+    });  
   }
 
 
@@ -266,7 +230,7 @@ return unsubscribe;
             onRowDidOpen={onItemOpen}   
             disableRightSwipe={true}         
       />
-      <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate('AddUpdatePageStack',{Screen:'AddUpdatePage', params: {operation:'add'}})}>
+      <TouchableOpacity style={styles.addButton} onPress={() =>navigation.navigate('AddUpdatePageStack',{Screen:'AddUpdateOrder', params: {operation:'add'}})}>
           <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
     </View>
